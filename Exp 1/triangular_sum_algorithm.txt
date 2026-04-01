@@ -1,0 +1,44 @@
+ALGORITHM: Triangular Sum (Optimized Mathematical Approach)
+
+Input: - Integer array nums[]
+
+Output: - Final triangular sum (mod 10)
+
+Concept: Instead of simulating the triangle formation step by step,
+compute the contribution of each element using binomial coefficients.
+
+The final result is: result = sum(nums[i] * C(n-1, i)) mod 10
+
+Steps:
+
+1.  Initialize:
+    -   Let n = size of nums
+    -   res = 0
+    -   coeff = 1 (represents C(n-1, 0))
+2.  Edge Case:
+    -   If n == 1: return nums[0]
+3.  Compute Contributions:
+    -   For i from 0 to n-1: res = (res + nums[i] * coeff) % 10
+
+        Update coefficient: coeff = coeff * (n - 1 - i) / (i + 1)
+4.  Return Result:
+    -   return res
+
+Time Complexity: O(n)
+
+Space Complexity: O(1)
+
+Implementation (C++):
+
+int triangularSum(vector& nums) { int n = nums.size(); int res = 0;
+
+    long long coeff = 1; // C(n-1, 0)
+
+    for (int i = 0; i < n; i++) {
+        res = (res + nums[i] * coeff) % 10;
+        coeff = coeff * (n - 1 - i) / (i + 1);
+    }
+
+    return res;
+
+}
