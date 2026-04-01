@@ -1,0 +1,78 @@
+ALGORITHM: Max Points on a Line (Using Slope Normalization)
+
+Input: - 2D array points[][] where each point = [x, y]
+
+Output: - Maximum number of points lying on the same straight line
+
+Steps:
+
+1.  Define Helper Function (Reducer):
+    -   Given two points, compute slope as: dx = x1 - x2 dy = y1 - y2
+
+    -   If dx == 0: return (0, 1) // vertical line
+
+    -   If dy == 0: return (1, 0) // horizontal line
+
+    -   Else:
+
+        -   Compute gcd(dx, dy)
+        -   Normalize slope as (dx/gcd, dy/gcd)
+2.  Initialize:
+    -   Let n = number of points
+    -   res = 1
+3.  Iterate Over All Pairs:
+    -   For each pair of points (i, j): Compute slope between i and j
+        counter = 2
+
+        For each k > j: Compute slope between i and k If slopes match:
+        Increment counter
+
+        res = max(res, counter)
+4.  Return Result:
+    -   return res
+
+Time Complexity: O(n^3)
+
+Space Complexity: O(1)
+
+Implementation (C++):
+
+int gcd(int a, int b) { if (b == 0) return a; return gcd(b, a % b); }
+
+pair<int, int> getSlope(vector& p1, vector& p2) { int dx = p1[0] -
+p2[0]; int dy = p1[1] - p2[1];
+
+    if (dx == 0) return {0, 1};
+    if (dy == 0) return {1, 0};
+
+    int g = gcd(abs(dx), abs(dy));
+    dx /= g;
+    dy /= g;
+
+    return {dx, dy};
+
+}
+
+int maxPoints(vector<vector>& points) { int n = points.size(); if (n <=
+2) return n;
+
+    int res = 1;
+
+    for (int i = 0; i < n; i++) {
+        for (int j = i + 1; j < n; j++) {
+            pair<int, int> slope = getSlope(points[i], points[j]);
+            int count = 2;
+
+            for (int k = j + 1; k < n; k++) {
+                if (getSlope(points[i], points[k]) == slope) {
+                    count++;
+                }
+            }
+
+            res = max(res, count);
+        }
+    }
+
+    return res;
+
+}
